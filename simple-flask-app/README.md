@@ -4,6 +4,8 @@ This document shows how to interact with the **Items API** using `curl` commands
 
 **DOCKER IMAGE:** `docker pull mahinraza556/flask-app:simple-crud-operations`
 
+**DOCKER RUN:** `docker run -itd -p 5000:5000 flask-app:simple-crud-opr`
+
 ## Base URL (example):
 
 ### Create a New Item
