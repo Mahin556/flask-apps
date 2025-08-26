@@ -1,6 +1,6 @@
 FROM python:3.11.13-slim
 
-LABEL description="Basic flask app to demonstrate CRUD operations." \
+LABEL description="Basic flask app to demonstrate CRUD operations with SQLAlchemy" \
         version="1.0" \
         maintainer="Mahin Raza mahinraza556@gmail.com"
 

@@ -1,6 +1,6 @@
 FROM python:3.11.13-slim
 
-LABEL description="Basic flask app to demonstrate CRUD operations with MySQL database" \
+LABEL description="Basic flask app to demonstrate CRUD operations with MongoDB database" \
         version="1.3" \
         maintainer="Mahin Raza mahinraza556@gmail.com"
 
