@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  flask:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: mahinraza556/flask-app:crud-with-postgresql
+    ports:
+      - "5000:5000"
+    environment: # Load variable value from .env file
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+    #env_file:
+    # - .env
+    networks:
+      - my_network
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  postgresql:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  db_data:
