@@ -2,7 +2,9 @@
 
 This document shows how to interact with the **Items API** using `curl` commands.
 
-Base URL (example):
+**DOCKER IMAGE:** `docker pull mahinraza556/flask-app:simple-crud-operations`
+
+## Base URL (example):
 
 ### Create a New Item
 
@@ -117,3 +119,5 @@ Example Response (404 Not Found):
   "error": "Item not found"
 }
 ```
+
+
