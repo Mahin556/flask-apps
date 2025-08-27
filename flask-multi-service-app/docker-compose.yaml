@@ -1,0 +1,67 @@
+version: "3.9"
+services:
+  user-service:
+    build: 
+      context: ./user-auth-service
+      dockerfile: Dockerfile
+    image: mahinraza556/flask-app:flask-micro-service-user-service
+    ports:
+      - "9090:5000"
+    environment: # Load variable value from .env file
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+    #env_file:
+    # - .env
+    networks:
+      - my_network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  item-service:
+    build: 
+      context: ./item-service
+      dockerfile: Dockerfile
+    image: mahinraza556/flask-app:flask-micro-service-item-service
+    ports:
+      - "8080:5000"
+    environment: # Load variable value from .env file
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      USER_SERVICE_URL: ${USER_SERVICE_URL:-http://user-service:5000}
+    #env_file:
+    # - .env
+    networks:
+      - my_network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASSWORD}"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  db_data:
