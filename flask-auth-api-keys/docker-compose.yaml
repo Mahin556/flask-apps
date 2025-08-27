@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  flask:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: mahinraza556/flask-app:flask-auth-api-keys
+    volumes:
+      - db_data:/app/instance
+    ports:
+      - "5000:5000"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  db_data:
